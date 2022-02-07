@@ -38,38 +38,79 @@ Memory Limit: 512 MB
 
 
 class MinHeap:
+    """
+    Constructor of the MinHeap class
+    :param 1: data (list) -> array to be converted into a heap
+    """
     def __init__(self, data: list):
         self.min_heap = data
         self.size = len(data)
         self.swaps = []
         self.build_heap()
 
+    """
+    Constructor of the MinHeap class
+    :param 1: data (list) -> array to be converted into a heap
+    """
     def left_child(self, i: int) -> int:
         return (2 * i) + 1
 
+    """
+    Constructor of the MinHeap class
+    :param 1: data (list) -> array to be converted into a heap
+    """
     def parent(self, i: int) -> int:
         return (i - 1) // 2
 
+    """
+    Constructor of the MinHeap class
+    :param 1: data (list) -> array to be converted into a heap
+    """
     def right_child(self, i: int) -> int:
         return (2 * i) + 2
 
+    """
+    Swap the problematic nodes with a smaller child until the min heap property
+    is satisfied.
+    :param 1: i (int) -> index of a node in the heap
+    """
     def sift_down(self, i: int):
         min_idx = i
+        # compute the index of the left child of i
         left = self.left_child(i)
-        if left <= self.size and self.min_heap[left] < self.min_heap[min_idx]:
+
+        # check if i has a left child
+        # if the value of the left child is less than the value of the min_idx (current node), change the
+        # min_idx to the value of the left child.
+        if left < self.size and self.min_heap[left] < self.min_heap[min_idx]:
             min_idx = left
 
+        # compute the index of the right child of i
         right = self.right_child(i)
-        if right <= self.size and self.min_heap[right] < self.min_heap[min_idx]:
+
+        # check if it has a right child.
+        # if the value of the right child is less than the value of the min_idx, change the min_idx
+        # to the value of the left child.
+        if right < self.size and self.min_heap[right] < self.min_heap[min_idx]:
             min_idx = right
 
+        # if i is not the smallest among its children, swap the node i with the min_idx
+        # save the swapped nodes in the list of swaps
+        # call swift down on the new swapped element.
         if i != min_idx:
             self.min_heap[i], self.min_heap[min_idx] = self.min_heap[min_idx], self.min_heap[i]
             self.swaps.append((i, min_idx))
             self.sift_down(min_idx)
 
+    """
+    Convert the given array of integers into a min heap. 
+    """
     def build_heap(self):
-        for i in range(0, len(self.min_heap) // 2):
+        # iterate over n // 2 elements from back to front.
+        # Call sift down method to move the bigger nodes
+        # at the bottom of the heap and the smaller nodes
+        # to the top.
+        for i in range((len(self.min_heap) // 2), -1, -1):
             self.sift_down(i)
 
 
@@ -98,7 +139,7 @@ def build_heap_naive(data: list) -> list:
     return swaps
 
 
-def main():
+def run_build_min_heap():
     n = int(input())
     data = list(map(int, input().split()))
     assert len(data) == n
@@ -112,4 +153,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_build_min_heap()
