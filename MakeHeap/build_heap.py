@@ -49,22 +49,19 @@ class MinHeap:
         self.build_heap()
 
     """
-    Constructor of the MinHeap class
-    :param 1: data (list) -> array to be converted into a heap
+        Compute the index of the left child of node i of a 0-based array.
     """
     def left_child(self, i: int) -> int:
         return (2 * i) + 1
 
     """
-    Constructor of the MinHeap class
-    :param 1: data (list) -> array to be converted into a heap
+        Compute the index of the parent of node i of a 0-based array.
     """
     def parent(self, i: int) -> int:
         return (i - 1) // 2
 
     """
-    Constructor of the MinHeap class
-    :param 1: data (list) -> array to be converted into a heap
+        Compute the index of the right child of node i of a 0-based array.
     """
     def right_child(self, i: int) -> int:
         return (2 * i) + 2
