@@ -59,51 +59,71 @@ class QueryProcessor:
     _prime = 1000000007
 
     def __init__(self, bucket_count: int):
+        # cardinality of the hash function
         self.bucket_count = bucket_count
         # store all strings in one list
         self.elems = []
+        for i in range(self.bucket_count):
+            self.elems.append([])
 
-    def _hash_func(self, s):
+    def _hash_func(self, s: str) -> int:
         ans = 0
         for c in reversed(s):
             ans = (ans * self._multiplier + ord(c)) % self._prime
         return ans % self.bucket_count
 
-    def write_search_result(self, was_found):
-        print('yes' if was_found else 'no')
+    def write_search_result(self, was_found: int) -> str:
+        return 'yes' if was_found else 'no'
 
-    def write_chain(self, chain):
-        print(' '.join(chain))
+    def write_chain(self, chain: list) -> str:
+        return ' '.join(chain)
 
-    def read_query(self):
-        return Query(input().split())
-
-    def process_query(self, query: Query):
-        if query.type == "check":
-            # use reverse order, because we append strings to the end
-            self.write_chain(cur for cur in reversed(self.elems)
-                             if self._hash_func(cur) == query.ind)
-        else:
-            try:
-                ind = self.elems.index(query.s)
-            except ValueError:
-                ind = -1
-            if query.type == 'find':
-                self.write_search_result(ind != -1)
-            elif query.type == 'add':
-                if ind == -1:
-                    self.elems.append(query.s)
+    def process_queries_chaining(self, queries: list) -> list:
+        result = []
+        for query in queries:
+            # check i - output the content of the i-th list in the table. Use spaces to separate the elements of the
+            # list. if the i-th list is empty, output a blank line.
+            if query.type == "check":
+                result.append(self.write_chain(self.elems[query.ind]))
             else:
-                if ind != -1:
-                    self.elems.pop(ind)
+                # calculate hash of the string
+                hash = self._hash_func(query.s)
 
-    def process_queries(self):
-        n = int(input())
-        for i in range(n):
-            self.process_query(self.read_query())
+                try:
+                    ind = self.elems[hash].index(query.s)
+                except ValueError:
+                    ind = -1
+
+                # find string - output "yes" or "no" depending on whether the table contains string or not.
+                if query.type == 'find':
+                    result.append(self.write_search_result(ind != -1))
+
+                # add string - insert string into the table. if there is already such string in the hash table,
+                # then just ignore the query.
+                elif query.type == 'add':
+                    if not (query.s in self.elems[hash]):
+                        self.elems[hash].insert(0, query.s)
+
+                # del string - remove string from the table. If there is no such string in  the hash table, then just
+                # ignore the query
+                else:
+                    if query.s in self.elems[hash]:
+                        self.elems[hash].pop(ind)
+
+        return result
+
+
+def write_responses(result: list):
+    print('\n'.join(result))
+
+
+def read_queries() -> list:
+    n = int(input())
+    return [Query(input().split()) for i in range(n)]
 
 
 if __name__ == '__main__':
     bucket_count = int(input())
     proc = QueryProcessor(bucket_count)
-    proc.process_queries()
+    queries = read_queries()
+    write_responses(proc.process_queries_chaining(queries))
