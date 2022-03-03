@@ -3,7 +3,7 @@
 File name: phone_book.py
 Author: Sayuri Monarrez Yesaki
 Date created: 02/24/2022
-Date last modified: 02/24/2022
+Date last modified: 03/03/2022
 Python version: 3.8
 
 Implement a simple phone book manager.
@@ -37,6 +37,12 @@ Memory Limit: 512 MB
 
 
 class Query:
+    """
+    Constructor of the Query class
+
+    :param 1: query (list) -> list with the query information: type of query, phone, name (optional)
+    """
+
     def __init__(self, query: list):
         self.type = query[0]
         self.number = int(query[1])
@@ -44,13 +50,37 @@ class Query:
             self.name = query[2]
 
 
+"""
+Read user's input and create a list of Query objects with the queries information.
+"""
+
+
 def read_queries() -> list:
+    # read user's total number of queries.
     n = int(input())
     return [Query(input().split()) for i in range(n)]
 
 
+"""
+Format output into a single string and print it.
+:param 1: result (list) -> list of strings
+"""
+
+
 def write_responses(result: list):
     print('\n'.join(result))
+
+
+"""
+Process the user's queries as follows: 
+- add number name : adds a person with name and phone number to the phone book. If there exists a user
+with such number already, then overwrites the corresponding name.
+- del number : erase a person with number number from the phone book. If there is no such
+person, then it ignores the query.
+- find number : return the appropriate name or "not found" if there is no such person in the book.
+
+:param 1: queries (list) -> list of Query objects.
+"""
 
 
 def process_queries(queries: list) -> list:

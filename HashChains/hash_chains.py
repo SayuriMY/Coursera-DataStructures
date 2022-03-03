@@ -3,7 +3,7 @@
 File name: hash_chains.py
 Author: Sayuri Monarrez Yesaki
 Date created: 02/24/2022
-Date last modified: 02/24/2022
+Date last modified: 03/03/2022
 Python version: 3.8
 
 Implement a hash table using the chaining scheme. Chaining is one of the most popular ways of implementing hash tables
@@ -46,6 +46,12 @@ Memory Limit: 512 MB
 
 
 class Query:
+    """
+    Constructor of the Query class
+
+    :param 1: query (list) -> list with the query information: type of query, string || index
+    """
+
     def __init__(self, query: list):
         self.type = query[0]
         if self.type == 'check':
@@ -58,13 +64,24 @@ class QueryProcessor:
     _multiplier = 263
     _prime = 1000000007
 
+    """
+    Constructor of the QueryProcessor class
+
+    :param 1: bucket_count (int) -> number of buckets you should have. 
+    """
+
     def __init__(self, bucket_count: int):
-        # cardinality of the hash function
+        # cardinality of the hash function - number of buckets you should have in the hash table.
         self.bucket_count = bucket_count
         # store all strings in one list
         self.elems = []
         for i in range(self.bucket_count):
             self.elems.append([])
+
+    """
+    Calculate the hash of a string using polynomial hashing.
+    :param 1: s (str) -> string to be hashed.
+    """
 
     def _hash_func(self, s: str) -> int:
         ans = 0
@@ -72,11 +89,33 @@ class QueryProcessor:
             ans = (ans * self._multiplier + ord(c)) % self._prime
         return ans % self.bucket_count
 
-    def write_search_result(self, was_found: int) -> str:
+    """
+    Return yes if was_found is true, otherwise, no.
+    :param 1: was_found (bool)
+    """
+
+    def write_search_result(self, was_found: bool) -> str:
         return 'yes' if was_found else 'no'
+
+    """
+    Return formatted output.
+    :param 1: result (list) -> list of strings
+    """
 
     def write_chain(self, chain: list) -> str:
         return ' '.join(chain)
+
+    """
+    Process the user's queries as follows: 
+    - add string : insert string into the table. If the string already exists, then just ignore the query.
+    - del string : remove string from the table. If there is no such string in the hash table, then just ignore
+        the query.
+    - find string : output "yes" or "no" depending on whether the table contains string or not.
+    - check i - output the content of the i-th list in the table. Use spaces to separate the elements of the list.
+    If the i-th list is empty, output the blank line.
+    
+    :param 1: queries (list) -> list of Query objects.
+    """
 
     def process_queries_chaining(self, queries: list) -> list:
         result = []
@@ -113,8 +152,19 @@ class QueryProcessor:
         return result
 
 
+"""
+Print output
+:param 1: result (list) -> list of strings
+"""
+
+
 def write_responses(result: list):
     print('\n'.join(result))
+
+
+"""
+Read user's input and create a list of Query objects
+"""
 
 
 def read_queries() -> list:
