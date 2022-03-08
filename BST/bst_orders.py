@@ -14,7 +14,7 @@ Task: Your are given a rooted binary tree. Build and output its in-order, pre-or
 Input: The first line contains the number of vertices n. The vertices of the tree are numbered from o to n-1. Vertex is
 the root. The next n lines contain information about the vertices 0, 1, ..., n - 1 in order. Each of these lines
 contains three integers keyi, lefti, and righti -
-    keyi - key of the i-th vertix
+    keyi - key of the i-th vertex
     lefti - index of the left child of the i-th vertex
     righti - index of the right child of the i-th vertex
 if i does not have left or right child (or both), the corresponding lefti or righti (or both) will be equal to -1.
@@ -34,15 +34,20 @@ Memory Limit: 512 MB
 
 import sys, threading
 
-sys.setrecursionlimit(10 ** 6)  # max depth of recursion
+sys.setrecursionlimit(10 ** 9 )  # max depth of recursion
 threading.stack_size(2 ** 27)  # new thread will get stack of such size
 
 
 class TreeOrders:
+    """"
+    This function was provided by the instructors.
+    """
     def read(self):
         self.n = int(sys.stdin.readline())
         self.key = [0 for i in range(self.n)]
+        # contain the idx of the left child of the i-th node
         self.left = [0 for i in range(self.n)]
+        # contain the idx of the right child of the i-th node
         self.right = [0 for i in range(self.n)]
         for i in range(self.n):
             [a, b, c] = map(int, sys.stdin.readline().split())
@@ -50,26 +55,65 @@ class TreeOrders:
             self.left[i] = b
             self.right[i] = c
 
-    def inOrder(self):
+    """
+    Call in_order_traversal to traverse the tree and save the node key
+     as follows: left, root, right.
+    """
+    def inOrder(self) -> list:
         self.result = []
-        # Finish the implementation
-        # You may need to add a new recursive method to do that
-
+        self.in_order_traversal(0, self.result)
         return self.result
 
-    def preOrder(self):
-        self.result = []
-        # Finish the implementation
-        # You may need to add a new recursive method to do that
+    """
+    Recursive algorithm to traverse the nodes of a tree and append the keys
+    in left, root, right order.
+    """
+    def in_order_traversal(self, idx: int, result_list: list):
+        if idx == -1:
+            return
+        self.in_order_traversal(self.left[idx], result_list)
+        result_list.append(self.key[idx])
+        self.in_order_traversal(self.right[idx], result_list)
 
+    """
+    Call pre_order_traversal to traverse the tree and save the node key
+     as follows: root, left, right.
+    """
+    def preOrder(self) -> list:
+        self.result = []
+        self.pre_order_traversal(0, self.result)
         return self.result
 
-    def postOrder(self):
-        self.result = []
-        # Finish the implementation
-        # You may need to add a new recursive method to do that
+    """
+    Recursive algorithm to traverse the nodes of a tree and append the keys
+    in root, left, right order.
+    """
+    def pre_order_traversal(self, idx: int, result_list: list):
+        if idx == -1:
+            return
+        result_list.append(self.key[idx])
+        self.pre_order_traversal(self.left[idx], result_list)
+        self.pre_order_traversal(self.right[idx], result_list)
 
+    """
+    Call post_order_traversal to traverse the tree and save the node key
+     as follows: left, right, root.
+    """
+    def postOrder(self) -> list:
+        self.result = []
+        self.post_order_traversal(0, self.result)
         return self.result
+
+    """
+    Recursive algorithm to traverse the nodes of a tree and append the keys
+    in left, right, root order.
+    """
+    def post_order_traversal(self, idx: int, result_list: list):
+        if idx == -1:
+            return
+        self.post_order_traversal(self.left[idx], result_list)
+        self.post_order_traversal(self.right[idx], result_list)
+        result_list.append(self.key[idx])
 
 
 def main():
