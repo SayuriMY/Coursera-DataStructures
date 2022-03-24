@@ -1,4 +1,42 @@
 # python3
+"""
+File name: set_range_sum.py
+Author: Sayuri Monarrez Yesaki
+Date created: 03/23/2022
+Date last modified: 03/23/2022
+Python version: 3.8
+
+Implement a data structure to store a set of integers and quickly compute range sums.
+
+Task: Implement a data structure that stores a set S of integers with the following allowed operations:
+
+        add(i) - add integer i into the set S (if it was there already, the set does not change).
+        del(i) - remove integer i from the set S (if there was no such element, nothing happens)
+        find(i) - check whether i is in the set S or not.
+        sum(l,r)- output the sum of all elements v in S such that l <= v <= r.
+
+Input: Initially the set S is empty. The first line contains n - the number of operations. The next n lines
+    contains operations. Each operation is one of the following:
+
+        Note: Each request will actually depend on the result of the last sum request. M = 1 000 000 001.
+              At any moment, let x be the result of the last sum operation, or just 0 if there were no sum operations
+               before.
+
+        "+ i" - add some integer ((i+x) mod M) to S
+        "- i" - delete some integer ((i+x) mod M) from S
+        "? i" - find some integer ((i+x) mod M) in S
+        "s l r" - compute the sum of all elements of S within some range of values sum((l+x) mod M, (r+x) mod M)
+
+Constraints: 1 <= n <= 100 000; 0 <= i <= 10 ^ 9
+
+Output: For each find request, just output "Found" or "Not found" depending on whether (i+x) mod M is in S or not.
+        For each sum, output the sum of all values v in such that ((l+x) mod M) <= v <= ((r+x) mod M), where x is the
+            result of the last sum operation or 0 if there was no previous sum operation.
+
+Time limit: 120 sec
+
+Memory Limit: 512 MB
+"""
 
 from sys import stdin
 
