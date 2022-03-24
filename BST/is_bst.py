@@ -62,9 +62,8 @@ def is_bst(idx: int, lower_bound: float, upper_bound: float, tree: list) -> bool
     result = lower_bound < tree[idx][0] < upper_bound
     if result:
         return result and is_bst(tree[idx][1], min(lower_bound, tree[idx][0]), min(upper_bound, tree[idx][0]), tree) \
-           and is_bst(tree[idx][2], max(lower_bound, tree[idx][0]), max(upper_bound, tree[idx][0]), tree)
+               and is_bst(tree[idx][2], max(lower_bound, tree[idx][0]), max(upper_bound, tree[idx][0]), tree)
     return result
-
 
 
 def main():
