@@ -201,19 +201,25 @@ def sum(fr, to):
 
 
 MODULO = 1000000001
+# number of operations
 n = int(stdin.readline())
 last_sum_result = 0
 for i in range(n):
     line = stdin.readline().split()
+    # add some integer ((i+x) mod M) to S, where x is the result of the last sum operation.
     if line[0] == '+':
         x = int(line[1])
         insert((x + last_sum_result) % MODULO)
+    # delete some integer ((i+x) mod M) from S, where x is the result of the last sum operation.
     elif line[0] == '-':
         x = int(line[1])
         erase((x + last_sum_result) % MODULO)
+    # find some integer ((i+x) mod M) in S, where x is the result of the last sum operation.
     elif line[0] == '?':
         x = int(line[1])
         print('Found' if search((x + last_sum_result) % MODULO) else 'Not found')
+    # compute the sum of all elements of S within some range of values sum((l+x) mod M, (r+x) mod M),
+    # where x is the result of the last sum operation.
     elif line[0] == 's':
         l = int(line[1])
         r = int(line[2])
